@@ -23,6 +23,11 @@ project:
     desc: iOS快捷指令专题
     link: /shortcuts
 
+  - type: project
+    name: 捷径沙盒
+    desc: iOS快捷指令专题
+    link: https://cdn.starchina.top/go/jjsh
+
 ---
 ::: center
 友情链接：  [清风不识字](https://woriqq.com/)  [木子资源网](https://www.womc.cn/)  [烧鱼](https://shaoyuu.com/)  [捷径盒](https://jiejinghe.com/)  [捷径社区](https://sharecuts.cn/)
