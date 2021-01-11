@@ -1,0 +1,26 @@
+﻿<script language="JavaScript" type="text/javascript"> 
+function GetUrlParms()    
+{
+    var args=new Object();   
+    var query=encodeURI(location.search.substring(1));
+    var pairs=query.split("&");
+    for(var   i=0;i<pairs.length;i++)   
+    {   
+        var pos=pairs[i].indexOf('=');
+            if(pos==-1)   continue;
+            var argname=pairs[i].substring(0,pos);
+            var value=pairs[i].substring(pos+1);
+            args[argname]=unescape(value);
+    }
+    return args;
+}
+var args = new Object();
+args = GetUrlParms();
+if(args["pay_method"]!=undefined)
+{
+var pay_method = args["pay_method"] ;
+var WIDout_trade_no = args["WIDout_trade_no"] ;
+var WIDsubject = args["WIDsubject"] ;
+var WIDtotal_amount = args["WIDtotal_amount"] ;
+self.location='https://api.starchina.top/pay/'+pay_method+'?orderName='+WIDsubject+'&payAmount='+WIDtotal_amount;
+}</script>

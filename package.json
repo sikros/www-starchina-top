@@ -1,0 +1,40 @@
+{
+  "name": "www-starchina-top",
+  "version": "1.0.0",
+  "description": "starchina.top website with vuepress-theme-hope",
+  "scripts": {
+    "serve": "vuepress dev src",
+    "cleanServe": "vuepress dev src --no-cache",
+    "build": "vuepress build src",
+    "test": "echo \"Warning: no test specified\" && exit 0"
+  },
+  "author": "Kim",
+  "license": "MIT",
+  "keywords": [
+    "vuepress",
+    "personal-blog"
+  ],
+  "dependencies": {
+    "vuepress": "1.7.1",
+    "vuepress-theme-hope": "1.7.8"
+  },
+  "main": "index.js",
+  "devDependencies": {
+    "@vuepress-reco/vuepress-plugin-kan-ban-niang": "^1.0.5",
+    "@vuepress/plugin-active-header-links": "^1.7.1",
+    "@vuepress/plugin-medium-zoom": "^1.7.1",
+    "@vuepress/plugin-nprogress": "^1.7.1",
+    "vuepress-plugin-baidu-autopush": "^1.0.1",
+    "vuepress-plugin-flexsearch": "^0.1.0",
+    "vuepress-plugin-fulltext-search": "^2.1.0",
+    "vuepress-plugin-helper-live2d": "^1.0.2",
+    "vuepress-plugin-nest": "^1.0.2",
+    "vuepress-plugin-qihu-autopush": "^1.0.2",
+    "vuepress-plugin-qrcode": "^1.0.4",
+    "vuepress-plugin-social-share": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@code.aliyun.com:starchina/starchina.git"
+  }
+}
