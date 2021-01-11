@@ -25,7 +25,7 @@ project:
 
   - type: project
     name: 捷径沙盒
-    desc: iOS快捷指令专题
+    desc: 快捷指令小程序
     link: https://cdn.starchina.top/go/jjsh
 
 ---
