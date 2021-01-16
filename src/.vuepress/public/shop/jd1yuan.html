@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+		<title>京东福利购</title>
+
+		<link rel="stylesheet" type="text/css" href="https://www.jingtuitui.com/static/activity/jxlj_202012/css/lj_shop.css?t=20210112_02" />
+
+		<script src="https://www.jingtuitui.com/static/activity/jxlj_202012/js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
+
+		<script src="https://www.jingtuitui.com/static/activity/jxlj_202012/js/clipboard.js" type="text/javascript" charset="utf-8"></script>
+
+		<link href="https://www.jingtuitui.com/static/activity/jxlj_202012/layui/css/layui.css?t=20191011" rel="stylesheet" type="text/css" />
+
+		<script type="text/javascript" src="https://www.jingtuitui.com/static/activity/jxlj_202012/layui/layui.js?t=20191011"></script>
+
+		<script type="text/javascript" src="https://www.jingtuitui.com/static/activity/jxlj_202012/js/vue.min.js"></script>
+
+		<script type="text/javascript">
+
+			// 页面自适应代码
+
+			(function(win) {
+
+				var doc = win.document;
+
+				var docEl = doc.documentElement;
+
+				var tid;
+
+
+
+				function refreshRem() {
+
+					var width = docEl.getBoundingClientRect().width;
+
+					var rem = width / 7.5;
+
+					docEl.style.fontSize = rem + 'px';
+
+				}
+
+				win.addEventListener('resize', function() {
+
+					clearTimeout(tid);
+
+					tid = setTimeout(refreshRem, 300);
+
+				}, false);
+
+				win.addEventListener('pageshow', function(e) {
+
+					if (e.persisted) {
+
+						clearTimeout(tid);
+
+						tid = setTimeout(refreshRem, 300);
+
+					}
+
+				}, false);
+
+				refreshRem();
+
+			})(window);
+
+		</script>
+
+	</head>
+
+	<body>
+
+		<div class="lj_shop" id="all_box">
+
+			<img class="head" src="https://www.jingtuitui.com/static/activity/jxlj_202012/image/banner_2.png?v=20210112">
+
+			<div class="rule_title">
+
+				<img src="https://www.jingtuitui.com/static/activity/jxlj_202012/image/label.png">
+
+			</div>
+
+			<div class="rule_font">
+
+			  * 每天0点开抢，数量有限<br/>
+
+			  * 每个用户每天每个专区限购1单，共有2个专区<br/>
+
+			  * 领取礼金优惠下单<br/>
+
+			  * 活动时间2021年1月13日-1月27日<br/>
+
+			</div>
+
+			<div class="back_color"></div>
+
+			<div class="content">
+
+				<div class="good_list_tit">
+
+					<div class="left item">
+
+						<img class="tit_img" src="https://www.jingtuitui.com/static/activity/jxlj_202012/image/left.png?t=20210112">
+
+						<img class="active" src="https://www.jingtuitui.com/static/activity/jxlj_202012/image/left_active.png?t=20210112">
+
+					</div>
+
+					<div class="right item">
+
+						<img class="tit_img" src="https://www.jingtuitui.com/static/activity/jxlj_202012/image/right.png?t=2020127">
+
+						<img class="active" src="https://www.jingtuitui.com/static/activity/jxlj_202012/image/right_active.png?t=2020127">
+
+					</div>
+
+				</div>
+
+				<ul class="list_com">
+
+					<!-- 开始循环 -->
+
+					<li v-for="(item, index) in goods_list" :key="item.id">
+
+						<img class="good_img lazyload" src="https://www.jingtuitui.com/static/home_v3/images/download.gif" :data-img="item.goods_img">
+
+						<div class="good_right">
+
+							<div class="name">
+
+								{{item.goods_name}}
+
+							</div>
+
+							<div class="coupon">
+
+								<div class="coupon_font">
+
+									礼金￥{{item.cash_price}}
+
+								</div>
+
+								<div class="share_butt" :data-id="item.id" v-on:click="copy_goods">
+
+									分享
+
+								</div>
+
+							</div>
+
+							<div class="price-wrapper">
+
+								<div class="price">
+
+									<p class="coupon_price">￥<span>{{item.coupon_price}}</span></p>
+
+									<p class="original_price">￥{{item.goods_price}}</p>
+
+								</div>
+
+								<div class="buy_but" v-if="item.state == 1" :data-id="item.id" v-on:click="go_shop">立即购买</div>
+
+								<div class="no_buy_but" v-if="item.state != 1" :data-id="item.id" >抢购结束</div>
+
+							</div>
+
+						</div>
+
+					</li>
+
+					<!-- 结束循环 -->
+
+				</ul>
+
+				<!-- 下拉刷新时的提示 -->
+
+				<!-- <div class="line">
+
+					<div class="loading">
+
+						<img src="https://www.jingtuitui.com/static/activity/jxlj_202012/image/download.gif">
+
+					</div>
+
+					<p class="over" hidden="hidden">— — 我也是有底线的 — —</p>
+
+				</div> -->
+
+				<div id="copy" style="display: none;"></div>
+
+			</div>
+
+		</div>
+
+		<script type="text/javascript">
+
+		layui.use(['form', 'layedit', 'laydate','layer'], function() {
+
+			var form = layui.form
+
+				,layer = layui.layer
+
+				,layedit = layui.layedit
+
+				,laydate = layui.laydate;
+
+				get_goods_list("1");
+
+		});
+
+		
+
+		// 标题栏置顶
+
+		$(window).scroll(function() {
+
+			let sideBar = $('.content').offset()
+
+			if (sideBar.top < $(window).scrollTop()) {
+
+				$('.good_list_tit').attr('style', 'position:fixed;top:0;right:0;left:0')
+
+			} else {
+
+				$('.good_list_tit').attr('style', 'position:absolute;')
+
+			}
+
+
+
+		});
+
+		var unionid = "1001319121";
+
+		var positionid = "2040933679";
+
+		var subUnionId = "";
+
+		var all_url = "https://www.jingtuitui.com"
+
+		var activity_type = "";
+
+		
+
+
+
+		var activity_vue = new Vue({
+
+			el: '#all_box',
+
+			data: {
+
+				goods_list : null,
+
+				
+
+			},
+
+			created: function () {
+
+				
+
+
+
+			},
+
+			methods: {
+
+				go_shop:function(event){
+
+					var index = layer.load(1, {
+
+						shade: [0.3,'#fff'] //0.1透明度的白色背景
+
+						});
+
+					var that = this;
+
+					temp_id = event.srcElement.dataset.id;
+
+					console.log(temp_id);
+
+					
+
+					$.ajax({
+
+						url: all_url+"/api/get_cash_gift_activity?get_type=get_link", //发单手机设置页面
+
+						dataType: "jsonp",
+
+						type: "POST",
+
+						//传送请求数据
+
+						data: 'id='+temp_id +"&activity_type="+activity_type  +"&unionid="+unionid  +"&positionid="+positionid  +"&subUnionId="+subUnionId ,
+
+						success: function(strValue) {
+
+							layer.closeAll();
+
+							if(strValue.return == 0) {
+
+								window.location.href = strValue.result;
+
+							} else {
+
+								layer.msg(strValue.result, {
+
+									time: 1200,
+
+									shift: 5
+
+								});
+
+								//错误提示
+
+							}
+
+						},
+
+						error:function(strValue) {
+
+							layer.closeAll();
+
+							layer.msg("一不小心出错咯~请稍后重试!!", {
+
+									time: 1200,
+
+									shift: 5
+
+								});
+
+						}
+
+					});
+
+				},
+
+				copy_goods:function(event){
+
+					var index = layer.load(1, {
+
+						shade: [0.3,'#fff'] //0.1透明度的白色背景
+
+						});
+
+					var that = this;
+
+					temp_id = event.srcElement.dataset.id;
+
+					
+
+					$.ajax({
+
+						url: all_url+"/api/get_cash_gift_activity?get_type=copy_goods", //发单手机设置页面
+
+						dataType: "jsonp",
+
+						type: "POST",
+
+						//传送请求数据
+
+						data: 'id='+temp_id +"&activity_type="+activity_type    +"&unionid="+unionid  +"&positionid="+positionid  +"&subUnionId="+subUnionId,
+
+						success: function(strValue) {
+
+							layer.closeAll();
+
+							if(strValue.return == 0) {
+
+								$("#copy").html(strValue.result);
+
+								$('#copy').trigger("click");// 模拟点击事件 点击复制
+
+								
+
+								
+
+							} else {
+
+								layer.msg(strValue.result, {
+
+									time: 1200,
+
+									shift: 5
+
+								});
+
+								//错误提示
+
+							}
+
+						},
+
+						error:function(strValue) {
+
+							layer.closeAll();
+
+							layer.msg("一不小心出错咯~请稍后重试!!", {
+
+									time: 1200,
+
+									shift: 5
+
+								});
+
+						}
+
+					});
+
+					
+
+					
+
+				},
+
+			}
+
+		})
+
+		var clipboard = new ClipboardJS('#copy',{
+
+			text: function() {
+
+				return $("#copy").html();
+
+			}
+
+
+
+		});
+
+		clipboard.on('success', function(e) {
+
+			console.info('Action:', e.action);
+
+			console.info('Text:', e.text);
+
+			console.info('Trigger:', e.trigger);
+
+
+
+			e.clearSelection();
+
+			layer.msg("复制成功,快去分享吧!", {
+
+									time: 1200,
+
+									shift: 5
+
+								});
+
+		});
+
+
+
+		clipboard.on('error', function(e) {
+
+			console.error('Action:', e.action);
+
+			console.error('Trigger:', e.trigger);
+
+			layer.msg("复制失败,换个浏览器试试~", {
+
+									time: 1200,
+
+									shift: 5
+
+								});
+
+		});
+
+		function get_goods_list(type) {
+
+			activity_type = type;
+
+			var index = layer.load(1, {
+
+			shade: [0.3,'#fff'] //0.1透明度的白色背景
+
+			});
+
+			$.ajax({
+
+				url: all_url+"/api/get_cash_gift_activity?get_type=goods_list",
+
+				dataType: "jsonp",
+
+				type: "POST",
+
+				data: "activity_type="+type  ,
+
+				success: function(strValue) {
+
+					layer.closeAll();
+
+					console.log(strValue);
+
+					if(strValue.return == 0) {
+
+						activity_vue.goods_list = strValue.result;
+
+						$("html,body").animate({scrollTop:"0px"},500);
+
+						is_load();
+
+					} else {
+
+
+
+					}
+
+				},
+
+				error:function(strValue) {
+
+					layer.closeAll();
+
+					layer.msg("一不小心出错咯~请稍后重试!!", {
+
+							time: 1200,
+
+							shift: 5
+
+						});
+
+				}
+
+			});
+
+		}
+
+		// 标题切换选择
+
+		$(".good_list_tit .item").click(function() {
+
+			$(this).children(".active").show();
+
+			$(this).children(".tit_img").hide();
+
+			if ($(this).hasClass("left")) {
+
+				$(".good_list_tit .right .active").hide();
+
+				$(".good_list_tit .right .tit_img").show();
+
+				get_goods_list("1");
+
+			} else{
+
+				$(".good_list_tit .left .active").hide();
+
+				$(".good_list_tit .left .tit_img").show();
+
+				get_goods_list("2");
+
+			}
+
+			
+
+		})
+
+		function is_load(params) {
+
+			//console.log("aa")
+
+			len = $('img.lazyload').length;
+
+			if(len<1){
+
+				setTimeout(function(){ is_load(); }, 100);
+
+				return;
+
+			}
+
+			imgLazyLoad();
+
+
+
+		}
+
+		var imgLazyLoad = function() {
+
+			var timer,
+
+			len = $('img.lazyload').length;
+
+			function getPos(node) {
+
+				var scrollx = document.documentElement.scrollLeft || document.body.scrollLeft,
+
+					scrollt = document.documentElement.scrollTop || document.body.scrollTop;
+
+				var pos = node.getBoundingClientRect();
+
+				return {
+
+					top: pos.top + scrollt,
+
+					right: pos.right + scrollx,
+
+					bottom: pos.bottom + scrollt,
+
+					left: pos.left + scrollx
+
+				}
+
+			}
+
+			function loading() {
+
+				timer && clearTimeout(timer);
+
+				timer = setTimeout(function() {
+
+					var scrollTop = document.documentElement.scrollTop || document.body.scrollTop,
+
+						imgs = $('img.lazyload');
+
+					screenHeight = document.documentElement.clientHeight;
+
+					for(var i = 0; i < imgs.length; i++) {
+
+						var pos = getPos(imgs[i]),
+
+							posT = pos.top,
+
+							posB = pos.bottom,
+
+							screenTop = screenHeight + scrollTop;
+
+						if((posT > scrollTop && posT < screenTop) || (posB > scrollTop && posB < screenTop)) {
+
+							imgs[i].src = imgs[i].getAttribute('data-img');
+
+							$(imgs[i]).removeClass('lazyload');
+
+						} else {
+
+							// new Image().src = imgs[i].getAttribute('data-img');
+
+						}
+
+					}
+
+				}, 100);
+
+			}
+
+			if(!len) return;
+
+			loading();
+
+			$(window).on('scroll resize', function() {
+
+				if(!$('img.lazyload').length) {
+
+					return;
+
+				} else {
+
+					loading();
+
+				}
+
+			})
+
+		}
+
+		
+
+	
+
+			
+
+		</script>
+
+	</body>
+
+</html>
+
