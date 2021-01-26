@@ -11,13 +11,13 @@ action:
     link: /shortcuts/how-to-use-shortcuts/
 
   - text: 推荐作品
-    link: https://cdn.starchina.top/go/jjpost
+    link: weixin://dl/business/?t=wHSdLa7TJLd
 ---
 
 ::: center
 
 ## 更多快捷指令请进入小程序查看
 
-[![捷径沙盒](https://blog.starchina.top/images/jjsh.jpg)](https://cdn.starchina.top/go/jjsh)
+[![捷径沙盒](https://blog.starchina.top/images/jjsh.jpg)](weixin://dl/business/?t=HmDrzjgz5Uj)
 
 ::: 
