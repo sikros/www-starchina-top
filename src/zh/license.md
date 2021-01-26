@@ -9,9 +9,9 @@ article: false
 
 ## The MIT License (MIT)
 
-| Permissions    | Limitations|Conditions | 
+| 许可    | 限制|条件 | 
 |----------------|--------------|-----------|
-|√Commercial use<br>√Modification<br>√Distribution<br>√Private use|×Liability<br>×Warranty | License and copyright notice|
+|√商业用途<br>√修改<br>√分发<br>√个人使用|×责任<br>×保用 | 保留版权声明和许可声明|
 
 **Copyright (C) 2020 by Kim**
 
@@ -32,3 +32,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
